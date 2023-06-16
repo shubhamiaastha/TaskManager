@@ -40,6 +40,20 @@ const createTask = async (req, res) => {
 
 }
 
+const catByTask = async (req,res)=>{
+    try{
+
+        const taskData = await taskModel.find({_id:req.body.task_id}).populate('catId');
+        res.status(200).json(taskData)
+
+
+
+    }catch(err){
+        console.log(err)
+    }
+
+}
+
 
 
 
@@ -110,5 +124,6 @@ module.exports = {
     updateTask,
     deleteTask,
     getTask,
+    catByTask
 
 }
