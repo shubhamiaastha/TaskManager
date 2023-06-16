@@ -7,19 +7,30 @@ const auth = (req,res,next)=>{
 
         let token = req.headers.authorization;
         if(token){
+            if(!token){
+                return res.status(401).json({ message: 'No token provided.' });
+            }else{
+
+          
             token = token.split(" ")[1];
             let user = jwt.verify(token,SECRET_KEY);
+
+            (err) => {
+                if (err) {
+                  if (err.name === 'TokenExpiredError') {
+                    return res.status(401).json({ message: 'Token expired.' });
+                  }
+                  return res.status(500).json({ message: 'Failed to authenticate token.' });
+                }
+        
+       
+           
+            }
             req.userId = user.id;
-            // ................................
-            // let category = jwt.verify(token,SECRET_KEY);
-            // req.catId = category.id
         }   
-        else{
-            res.status(401).json({ message: "unauthorizede user" })
-        }
         next();
-
-
+    }
+       
     }catch(err){
         res.status(401).json({ message: "unauthorizede user" })
 

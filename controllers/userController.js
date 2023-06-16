@@ -26,7 +26,7 @@ const signup = async (req, res) => {
 
         });
 
-        const token = jwt.sign({ email: result.email, id: result._id }, SECRET_KEY);
+        const token = jwt.sign({ email: result.email, id: result._id }, SECRET_KEY ,{ expiresIn: '2m' });
         res.status(201).json({ user: result, token: token })
 
     } catch (err) {

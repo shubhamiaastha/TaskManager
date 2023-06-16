@@ -41,6 +41,9 @@ const createTask = async (req, res) => {
 }
 
 
+
+
+
 const updateTask = async (req, res) => {
 
 
@@ -89,13 +92,10 @@ const deleteTask = async(req, res) => {
 
 const getTask = async (req, res) => {
 
-
-
-
-
     try {
 
         const task = await taskModel.find({ userId: req.userId });
+    
         res.status(200).json(task);
 
     } catch (err) {
@@ -103,14 +103,7 @@ const getTask = async (req, res) => {
         res.status(500).json({ message: "something went wrong " });
 
     }
-
-
-
-
-
 }
-
-
 
 module.exports = {
     createTask,

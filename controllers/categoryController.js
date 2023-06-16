@@ -12,8 +12,9 @@ const createCategory = async (req, res) => {
         userId: req.userId,
 
     })
-
     try {
+
+
 
         await newCategory.save();
         res.status(201).json({ newCategory });
@@ -29,11 +30,15 @@ const createCategory = async (req, res) => {
 }
 
 
+
 const getCategory = async (req, res) => {
+
+
     try {
 
-        const task = await categoryModel.find({ catId: req.catId });
-        res.status(200).json(task);
+        const cat = await categoryModel.find();
+    
+        res.status(200).json(cat);
 
     } catch (err) {
         console.log(err);
@@ -43,9 +48,12 @@ const getCategory = async (req, res) => {
 
 
 
+
+
 }
 
 module.exports = {
     createCategory,
     getCategory
+    
 }
