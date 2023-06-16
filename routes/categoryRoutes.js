@@ -4,7 +4,7 @@ const auth = require('../middle/auth');
 const { createCategory, getCategory } = require('../controllers/categoryController');
 
 categoryRouter.post('/', auth ,createCategory)
-// categoryRouter.get('/', auth,getCategory)
+categoryRouter.get('/:id', auth,getCategory)
 
 
 

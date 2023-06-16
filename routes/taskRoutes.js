@@ -5,7 +5,7 @@ const taskRouter = express.Router();
 
 
 taskRouter.get('/', auth ,getTask)
-taskRouter.get('/cat', auth ,getTask)
+// taskRouter.get('/cat', auth ,getTask)
 taskRouter.post('/', auth,createTask)
 
 taskRouter.delete('/:id',auth, deleteTask)

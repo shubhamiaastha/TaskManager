@@ -8,15 +8,15 @@ const createCategory = async (req, res) => {
     const { name } = req.body;
 
     const newCategory = new categoryModel({
-        name:name,
+        name: name,
         userId: req.userId,
-        
+
     })
 
     try {
 
         await newCategory.save();
-        res.status(201).json({newCategory});
+        res.status(201).json({ newCategory });
 
 
     } catch (err) {
@@ -26,8 +26,26 @@ const createCategory = async (req, res) => {
 
     }
 
-} 
+}
+
+
+const getCategory = async (req, res) => {
+    try {
+
+        const task = await categoryModel.find({ catId: req.catId });
+        res.status(200).json(task);
+
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ message: "something went wrong " });
+
+    }
+
+
+
+}
 
 module.exports = {
-    createCategory
+    createCategory,
+    getCategory
 }

@@ -1,4 +1,4 @@
-const { pipeline } = require('stream');
+
 const Task = require('../models/task');
 const taskModel = require('../models/task');
 const jwt = require('jsonwebtoken');
@@ -7,25 +7,22 @@ const SECRET_KEY = 'Task'
 
 
 const createTask = async (req, res) => {
-    // console.log(req.userId)
+  
 
 
     const { task, desc, status } = req.body;
-   
 
-    const newTask = new taskModel({
+
+
+    const newTask = await taskModel.create({
         task: task,
         desc: desc,
         status: status,
         userId: req.userId,
-        
+        catId:req.body.catId
+
+
     })
-
-
-    // const token = jwt.sign({id: newTask._id }, SECRET_KEY);
-    // res.status(201).json({ Task: newTask,catId: newTask.catId, token: token })
-
-
 
 
     try {
@@ -73,11 +70,7 @@ const updateTask = async (req, res) => {
 
 }
 
-const deleteTask = (req, res) => {
-
-}
-
-const getTask = async (req, res) => {
+const deleteTask = async(req, res) => {
 
     
     const id = req.params.id;
@@ -91,6 +84,12 @@ const getTask = async (req, res) => {
         console.log(err);
         res.status(500).json({ message: "something went wrong" });
     }
+
+}
+
+const getTask = async (req, res) => {
+
+
 
 
 
@@ -113,49 +112,10 @@ const getTask = async (req, res) => {
 
 
 
-const getcat = (req,res)=>{
-
-    Task.aggregate([
-        {
-          $lookup: {
-            from: 'Category', // Name of the collection to join
-            localField: 'name',
-            foreignField: '_id',
-            let:{_id: "$_id"},
-            as: 'Category',
-            pipeline:[
-                {$match:{$expr:{$eq: ['_id , $$_id']}}}
-            ]
-          }
-        },
-        {
-          '$category' :{
-            _id:1,
-            name:1
-          }
-
-        }
-      ])
-      .exec(function(err, task) {
-        if (err) {
-          console.error('Error joining collections', err);
-          return;
-        }
-      
-        console.log(task); // Resulting joined documents
-      });
-      
-
-
-
-
-}
-
-
 module.exports = {
     createTask,
     updateTask,
     deleteTask,
     getTask,
-    getcat
+
 }

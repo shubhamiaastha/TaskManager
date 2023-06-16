@@ -18,13 +18,9 @@ app.use((req,res,next)=>{
 })
 
 
-
-
 app.use('/users',userRouter)
 app.use('/task', taskRouter)
 app.use('/category',categoryRouter);
-
-
 
 
 app.get('/',(req,res)=>{
@@ -43,14 +39,6 @@ const db = 'TaskManagment'
 // mongoose.connect('mongodb+srv://root:root@restfullapi.tkvtlvx.mongodb.net/?retryWrites=true&w=majority')
 mongoose.connect(`mongodb://${Server}/${db}`)
 .then(()=>{
-
-
-
-    
-    
-
-
-
 
 
     app.listen(PORT,()=>{
