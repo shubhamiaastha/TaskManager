@@ -1,25 +1,27 @@
 
-const Task = require('../models/task');
+
 const taskModel = require('../models/task');
 const jwt = require('jsonwebtoken');
+
+
 
 const SECRET_KEY = 'Task'
 
 
-const createTask = async (req, res) => {
-  
-
-
-    const { task, desc, status } = req.body;
+const createTask =  async (req, res) => {
 
 
 
+    const { task, desc, status, start, Duration, StartTask } = req.body;
     const newTask = await taskModel.create({
         task: task,
         desc: desc,
         status: status,
         userId: req.userId,
-        catId:req.body.catId
+        catId: req.body.catId,
+        Duration: Duration,
+        StartTask: StartTask
+
 
 
     })
@@ -27,8 +29,8 @@ const createTask = async (req, res) => {
 
     try {
 
-        await newTask.save();
-        res.status(201).json(newTask);
+           await newTask.save();
+            res.status(201).json(newTask);
 
 
     } catch (err) {
@@ -40,15 +42,15 @@ const createTask = async (req, res) => {
 
 }
 
-const catByTask = async (req,res)=>{
-    try{
+const catByTask = async (req, res) => {
+    try {
 
-        const taskData = await taskModel.find({_id:req.body.task_id}).populate('catId');
+        const taskData = await taskModel.find({ _id: req.body.task_id }).populate('catId');
         res.status(200).json(taskData)
 
 
 
-    }catch(err){
+    } catch (err) {
         console.log(err)
     }
 
@@ -87,9 +89,9 @@ const updateTask = async (req, res) => {
 
 }
 
-const deleteTask = async(req, res) => {
+const deleteTask = async (req, res) => {
 
-    
+
     const id = req.params.id;
     try {
 
@@ -109,7 +111,7 @@ const getTask = async (req, res) => {
     try {
 
         const task = await taskModel.find({ userId: req.userId });
-    
+
         res.status(200).json(task);
 
     } catch (err) {
@@ -119,11 +121,33 @@ const getTask = async (req, res) => {
     }
 }
 
+const getTaskByStatus = async (req, res) => {
+    // const user = req.query.user;
+
+    try {
+
+        const counts = await TaskModel.aggregate([
+            // { $match: { user: ObjectId(user) } },
+            { $group: { _id: '$status', count: { $sum: 1 } } },
+        ]);
+
+        const result = {};
+        counts.forEach((item) => {
+            result[item._id] = item.count;
+        });
+        res.json(result);
+    } catch (error) {
+        console.error('Error retrieving task counts:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+}
+
 module.exports = {
     createTask,
     updateTask,
     deleteTask,
     getTask,
-    catByTask
+    catByTask,
+    getTaskByStatus
 
 }

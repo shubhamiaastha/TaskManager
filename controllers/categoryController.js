@@ -1,4 +1,5 @@
 const categoryModel = require('../models/category');
+const TaskModel = require('../models/task')
 
 
 const createCategory = async (req, res) => {
@@ -22,10 +23,12 @@ const createCategory = async (req, res) => {
 
     } catch (err) {
         console.log(err);
-        res.status(500).json({ message: "something went wrong " });
+        res.status(500).json({ message: "something went wrong," });
 
 
     }
+
+
 
 }
 
@@ -52,8 +55,25 @@ const getCategory = async (req, res) => {
 
 }
 
+const getTaskByCategory =  async (req, res) => {
+    
+    try {
+      const taskCountByCategory = await TaskModel.aggregate([
+     
+        { $group: { _id: '$categoryId', TaskCount: { $sum: 1 } } },
+      ]);
+  
+      res.json(taskCountByCategory);
+    } catch (error) {
+      res.status(500).json({ error: 'An error occurred while retrieving task counts.' });
+    }
+  };
+
+
+
 module.exports = {
     createCategory,
-    getCategory
+    getCategory,
+    getTaskByCategory
     
 }

@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const categoriesSchema = new mongoose.Schema({
-    name: { type: [String], 
+    name: { type: String, 
           required: true 
     },
     userId:{
@@ -10,12 +10,6 @@ const categoriesSchema = new mongoose.Schema({
         require:true
 
     },
-
-    
-
-    
-   
-
 
 
 }, { timestamps: true });

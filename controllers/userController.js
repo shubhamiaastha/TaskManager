@@ -2,11 +2,13 @@ const userModel = require("../models/user")
 const bcrypt = require("bcrypt");
 const jwt = require('jsonwebtoken');
 
+
 const SECRET_KEY = 'Task'
 
 const signup = async (req, res) => {
 
     const { username, email, password } = req.body
+    console.log(req.body)
 
     try {
 
@@ -26,7 +28,7 @@ const signup = async (req, res) => {
 
         });
 
-        const token = jwt.sign({ email: result.email, id: result._id }, SECRET_KEY,{ expiresIn: '4m' });
+        const token = jwt.sign({ email: result.email, id: result._id }, SECRET_KEY);
         res.status(201).json({ user: result, token: token })
 
     } catch (err) {
@@ -57,7 +59,7 @@ const signin = async (req, res) => {
 
         }
 
-        const token = jwt.sign({ email: existingUser.email, id: existingUser._id }, SECRET_KEY);
+        const token = jwt.sign({ email: existingUser.email, id: existingUser._id }, SECRET_KEY,{expiresIn:'10m'});
         res.status(201).json({ user: existingUser, token: token })
  
     } catch (err) {
@@ -68,4 +70,4 @@ const signin = async (req, res) => {
 }
 
 
-module.exports = { signup, signin }
+module.exports = { signup, signin}

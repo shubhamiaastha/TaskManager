@@ -12,19 +12,31 @@ const NoteSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    userId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
-        required: true
+    // userId: {
+    //     type: mongoose.Schema.Types.ObjectId,
+    //     ref: 'User',
+    //     required: true
 
-    },
+    // },
     catId:{
 
         type:mongoose.Schema.Types.ObjectId,
         ref:'Category',
         require:true
 
-    }
+    },
+	Duration: {
+		type: Number,
+		
+		
+	},
+	StartTask: {
+		type: Date,
+        default: Date.now,
+		
+	},
+   
+   
    
    
 
